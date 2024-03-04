@@ -1,8 +1,11 @@
 package com.epf.rentmanager.servlet;
 
+import com.epf.rentmanager.AppConfiguration;
 import com.epf.rentmanager.model.Vehicule;
 import com.epf.rentmanager.service.ServiceException;
 import com.epf.rentmanager.service.VehicleService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,7 +29,8 @@ public class VehicleCreateServlet extends HttpServlet {
             throws ServletException, IOException{
         try{
             this.getServletContext().getRequestDispatcher("/WEB-INF/views/vehicles/create.jsp").forward(request, response);
-            VehicleService vehicleService = VehicleService.getInstance();
+            ApplicationContext context = new AnnotationConfigApplicationContext(AppConfiguration.class);
+            VehicleService vehicleService = context.getBean(VehicleService.class);
             Vehicule vehicleToCreate = new Vehicule();
             vehicleToCreate.setConstructeur(request.getParameter("manufacturer"));
             vehicleToCreate.setModele(request.getParameter("modele"));

@@ -6,22 +6,19 @@ import java.util.List;
 import com.epf.rentmanager.dao.ClientDao;
 import com.epf.rentmanager.dao.DaoException;
 import com.epf.rentmanager.model.Client;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
+@Service
+@Scope("singleton")
 public class ClientService {
 
 	private ClientDao clientDao;
-	public static ClientService instance;
-	
-	private ClientService() {
-		this.clientDao = ClientDao.getInstance();
-	}
-	
-	public static ClientService getInstance() {
-		if (instance == null) {
-			instance = new ClientService();
-		}
-		
-		return instance;
+	//public static ClientService instance;
+
+	private ClientService(ClientDao clientDao) {
+		this.clientDao = clientDao;
 	}
 	
 	

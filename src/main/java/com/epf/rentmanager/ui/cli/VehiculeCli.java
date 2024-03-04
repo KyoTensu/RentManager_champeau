@@ -5,23 +5,20 @@ import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ServiceException;
 import com.epf.rentmanager.service.VehicleService;
 import com.epf.rentmanager.utils.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
+@Scope("singleton")
 public class VehiculeCli {
     private VehicleService vehicleService;
 
-    public static VehiculeCli instance;
+    @Autowired
+    private VehiculeCli(VehicleService vehicleService){ this.vehicleService = vehicleService;}
 
-    private VehiculeCli(){ this.vehicleService = VehicleService.getInstance();}
-
-    public static VehiculeCli getInstance(){
-        if (instance == null) {
-            instance = new VehiculeCli();
-        }
-
-        return instance;
-    }
 
     public void create(){
         try {
