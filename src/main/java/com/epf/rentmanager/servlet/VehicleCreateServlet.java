@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/vehicles/create")
+@WebServlet("/cars/create")
 public class VehicleCreateServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -33,6 +33,7 @@ public class VehicleCreateServlet extends HttpServlet {
             vehicleToCreate.setNb_places(Integer.parseInt(request.getParameter("seats")));
             //System.out.println(vehicleToCreate.getConstructeur()+vehicleToCreate.getModele()+vehicleToCreate.getNb_places());
             vehicleService.create(vehicleToCreate);
+            //response.sendRedirect("rentmanager/cars");
         }catch (ServiceException e){
             System.out.println(e.getMessage());
         }

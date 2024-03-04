@@ -10,22 +10,18 @@ import com.epf.rentmanager.model.Vehicule;
 import com.epf.rentmanager.dao.ClientDao;
 import com.epf.rentmanager.dao.VehicleDao;
 import com.epf.rentmanager.model.Vehicule;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
+@Service
+@Scope("singleton")
 public class VehicleService {
 
 	private VehicleDao vehicleDao;
 	public static VehicleService instance;
 	
-	private VehicleService() {
-		this.vehicleDao = VehicleDao.getInstance();
-	}
-	
-	public static VehicleService getInstance() {
-		if (instance == null) {
-			instance = new VehicleService();
-		}
-		
-		return instance;
+	private VehicleService(VehicleDao vehicleDao) {
+		this.vehicleDao = vehicleDao;
 	}
 	
 	
