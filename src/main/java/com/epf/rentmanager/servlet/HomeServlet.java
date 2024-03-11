@@ -3,8 +3,10 @@ package com.epf.rentmanager.servlet;
 import com.epf.rentmanager.AppConfiguration;
 import com.epf.rentmanager.service.ServiceException;
 import com.epf.rentmanager.service.VehicleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import java.io.IOException;
 
@@ -22,12 +24,21 @@ public class HomeServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@Autowired
+	VehicleService vehicleService;
+
+	@Override
+	public void init() throws ServletException{
+		super.init();
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+	}
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		try{
-			ApplicationContext context = new AnnotationConfigApplicationContext(AppConfiguration.class);
-			VehicleService vehicleService = context.getBean(VehicleService.class);
+			//ApplicationContext context = new AnnotationConfigApplicationContext(AppConfiguration.class);
+			//VehicleService vehicleService = context.getBean(VehicleService.class);
 			request.setAttribute("vehiclesNbr", vehicleService.countVehicles());
 			this.getServletContext().getRequestDispatcher("/WEB-INF/views/home.jsp").forward(request, response);
 		}catch (ServiceException e){
