@@ -20,10 +20,10 @@ public class VehicleDao {
 	private VehicleDao() {}
 
 	
-	private static final String CREATE_VEHICLE_QUERY = "INSERT INTO Vehicle(constructeur, nb_places) VALUES(?, ?);";
+	private static final String CREATE_VEHICLE_QUERY = "INSERT INTO Vehicle(constructeur, nb_places, model) VALUES(?, ?, ?);";
 	private static final String DELETE_VEHICLE_QUERY = "DELETE FROM Vehicle WHERE id=?;";
-	private static final String FIND_VEHICLE_QUERY = "SELECT id, constructeur, nb_places FROM Vehicle WHERE id=?;";
-	private static final String FIND_VEHICLES_QUERY = "SELECT id, constructeur, nb_places FROM Vehicle;";
+	private static final String FIND_VEHICLE_QUERY = "SELECT id, constructeur, nb_places, model FROM Vehicle WHERE id=?;";
+	private static final String FIND_VEHICLES_QUERY = "SELECT id, constructeur, nb_places, model FROM Vehicle;";
 
 	private static final String COUNT_VEHICLES_QUERY = "SELECT COUNT(*) FROM Vehicle;";
 	
@@ -34,6 +34,7 @@ public class VehicleDao {
 
 			ps.setString(1, vehicle.getConstructeur());
 			ps.setInt(2, vehicle.getNb_places());
+			ps.setString(3, vehicle.getModel());
 
 			ps.execute();
 
@@ -88,8 +89,8 @@ public class VehicleDao {
 			Vehicule vehicleResult = new Vehicule();
 			vehicleResult.setId(results.getInt(1));
 			vehicleResult.setConstructeur(results.getString(2));
-			vehicleResult.setModele(results.getString(3));
-			vehicleResult.setNb_places(results.getInt(4));
+			vehicleResult.setNb_places(results.getInt(3));
+			vehicleResult.setModel(results.getString(4));
 
 			return vehicleResult;
 		}catch (SQLException e){
@@ -113,8 +114,8 @@ public class VehicleDao {
 				Vehicule vehicleIter = new Vehicule();
 				vehicleIter.setId(results.getInt(1));
 				vehicleIter.setConstructeur(results.getString(2));
-				//vehicleIter.setModele(results.getString(3));
-				vehicleIter.setNb_places(results.getInt(3)); //3 à la place de 4 car requête SQL n'a pas le modèle
+				vehicleIter.setNb_places(results.getInt(3));
+				vehicleIter.setModel(results.getString(4));
 
 				listeVehicles.add(vehicleIter);
 			}

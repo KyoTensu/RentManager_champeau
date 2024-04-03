@@ -3,8 +3,8 @@ package com.epf.rentmanager.model;
 public class Vehicule {
     private int id;
     private String constructeur;
-    private String modele;
     private int nb_places;
+    private String model;
 
     public int getId(){
         return this.id;
@@ -14,8 +14,8 @@ public class Vehicule {
         return this.constructeur;
     }
 
-    public String getModele(){
-        return this.modele;
+    public String getModel(){
+        return this.model;
     }
 
     public int getNb_places(){
@@ -30,8 +30,8 @@ public class Vehicule {
         this.constructeur = constructeur;
     }
 
-    public void setModele(String modele){
-        this.modele = modele;
+    public void setModel(String model){
+        this.model = model;
     }
 
     public void setNb_places(int nb_places){

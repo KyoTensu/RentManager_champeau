@@ -39,16 +39,16 @@ public class VehicleCreateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
         try{
-            this.getServletContext().getRequestDispatcher("/WEB-INF/views/vehicles/create.jsp").forward(request, response);
+            //this.getServletContext().getRequestDispatcher("/WEB-INF/views/vehicles/create.jsp").forward(request, response);
             //ApplicationContext context = new AnnotationConfigApplicationContext(AppConfiguration.class);
             //VehicleService vehicleService = context.getBean(VehicleService.class);
             Vehicule vehicleToCreate = new Vehicule();
             vehicleToCreate.setConstructeur(request.getParameter("manufacturer"));
-            vehicleToCreate.setModele(request.getParameter("modele"));
+            vehicleToCreate.setModel(request.getParameter("modele"));
             vehicleToCreate.setNb_places(Integer.parseInt(request.getParameter("seats")));
             //System.out.println(vehicleToCreate.getConstructeur()+vehicleToCreate.getModele()+vehicleToCreate.getNb_places());
             vehicleService.create(vehicleToCreate);
-            //response.sendRedirect("rentmanager/cars");
+            response.sendRedirect(request.getContextPath() + "/cars");
         }catch (ServiceException e){
             System.out.println(e.getMessage());
         }
