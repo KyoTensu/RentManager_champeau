@@ -20,11 +20,11 @@
                     <!-- Profile Image -->
                     <div class="box box-primary">
                         <div class="box-body box-profile">
-                            <h3 class="profile-username text-center">John Doe (john.doe@epf.fr)</h3>
+                            <h3 class="profile-username text-center">${client.prenom} ${client.nom} (${client.email})</h3>
 
                             <ul class="list-group list-group-unbordered">
                                 <li class="list-group-item">
-                                    <b>Reservation(s)</b> <a class="pull-right">2</a>
+                                    <b>Reservation(s)</b> <a class="pull-right">${resaNbr}</a>
                                 </li>
                                 <li class="list-group-item">
                                     <b>Voiture(s)</b> <a class="pull-right">3</a>
@@ -52,18 +52,14 @@
                                             <th>Date de debut</th>
                                             <th>Date de fin</th>
                                         </tr>
+                                        <c:forEach items="${resaList}" var="resa">
                                         <tr>
-                                            <td>3.</td>
-                                            <td>Renault Megane</td>
+                                            <td>${resa.id}</td>
+                                            <td>${vehicleService.findById(resa.vehicle_id).getConstructeur()} Megane</td>
                                             <td>10/01/2018</td>
                                             <td>12/01/2018</td>
                                         </tr>
-                                        <tr>
-                                            <td>7.</td>
-                                            <td>Peugeot 207</td>
-                                            <td>10/01/2018</td>
-                                            <td>12/01/2018</td>
-                                        </tr>
+                                        </c:forEach>
                                     </table>
                                 </div>
                             </div>

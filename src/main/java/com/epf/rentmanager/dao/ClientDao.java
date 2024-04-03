@@ -22,6 +22,7 @@ public class ClientDao {
 	private static final String DELETE_CLIENT_QUERY = "DELETE FROM Client WHERE id=?;";
 	private static final String FIND_CLIENT_QUERY = "SELECT nom, prenom, email, naissance FROM Client WHERE id=?;";
 	private static final String FIND_CLIENTS_QUERY = "SELECT id, nom, prenom, email, naissance FROM Client;";
+	private static final String COUNT_CLIENTS_QUERY = "SELECT COUNT(*) FROM Client;";
 	
 	public long create(Client client) throws DaoException {
 		try{
@@ -77,18 +78,19 @@ public class ClientDao {
 
 			ps.execute();
 
-			ResultSet results = ps.getGeneratedKeys();
+			ResultSet results = ps.getResultSet();
+			results.next();
+
+			Client clientResult = new Client();
+			clientResult.setId(Long.valueOf(id).intValue());
+			clientResult.setNom(results.getString(1));
+			clientResult.setPrenom(results.getString(2));
+			clientResult.setEmail(results.getString(3));
+			clientResult.setNaissance(results.getDate(4).toLocalDate());
 
 			results.close();
 			ps.close();
 			connexion.close();
-
-			Client clientResult = new Client();
-			clientResult.setId(results.getInt(1));
-			clientResult.setNom(results.getString(2));
-			clientResult.setPrenom(results.getString(3));
-			clientResult.setEmail(results.getString(4));
-			clientResult.setNaissance(results.getDate(5).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 
 			return clientResult;
 		}catch (SQLException e){
@@ -133,6 +135,27 @@ public class ClientDao {
 
 			return listeClients;
 		}catch (SQLException e){
+			throw new DaoException(e.getMessage());
+		}
+	}
+
+	public int countClient() throws DaoException{
+		try{
+			Connection connexion = ConnectionManager.getConnection();
+			PreparedStatement ps = connexion.prepareStatement(COUNT_CLIENTS_QUERY, Statement.RETURN_GENERATED_KEYS);
+
+			ps.execute();
+
+			ResultSet results = ps.getResultSet();
+			results.next();
+			int clientNbr = results.getInt(1);
+
+			results.close();
+			ps.close();
+			connexion.close();
+
+			return clientNbr;
+		}catch(SQLException e){
 			throw new DaoException(e.getMessage());
 		}
 	}

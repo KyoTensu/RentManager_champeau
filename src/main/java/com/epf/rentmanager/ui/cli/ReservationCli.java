@@ -6,24 +6,18 @@ import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.ServiceException;
 import com.epf.rentmanager.service.VehicleService;
 import com.epf.rentmanager.utils.IOUtils;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Component
+@Scope("singleton")
 public class ReservationCli {
     private ReservationService reservationService;
 
-    public static ReservationCli instance;
-
-    private ReservationCli(){ this.reservationService = ReservationService.getInstance();}
-
-    public static ReservationCli getInstance(){
-        if (instance == null) {
-            instance = new ReservationCli();
-        }
-
-        return instance;
-    }
+    private ReservationCli(){ this.reservationService = reservationService;}
 
     public void create(){
         try {

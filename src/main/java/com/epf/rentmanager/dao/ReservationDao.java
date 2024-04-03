@@ -14,23 +14,21 @@ import com.epf.rentmanager.model.Reservation;
 
 import com.epf.rentmanager.model.Vehicule;
 import com.epf.rentmanager.persistence.ConnectionManager;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
+@Repository
+@Scope("singleton")
 public class ReservationDao {
 
-	private static ReservationDao instance = null;
 	private ReservationDao() {}
-	public static ReservationDao getInstance() {
-		if(instance == null) {
-			instance = new ReservationDao();
-		}
-		return instance;
-	}
 	
 	private static final String CREATE_RESERVATION_QUERY = "INSERT INTO Reservation(client_id, vehicle_id, debut, fin) VALUES(?, ?, ?, ?);";
 	private static final String DELETE_RESERVATION_QUERY = "DELETE FROM Reservation WHERE id=?;";
 	private static final String FIND_RESERVATIONS_BY_CLIENT_QUERY = "SELECT id, vehicle_id, debut, fin FROM Reservation WHERE client_id=?;";
 	private static final String FIND_RESERVATIONS_BY_VEHICLE_QUERY = "SELECT id, client_id, debut, fin FROM Reservation WHERE vehicle_id=?;";
 	private static final String FIND_RESERVATIONS_QUERY = "SELECT id, client_id, vehicle_id, debut, fin FROM Reservation;";
+	private static final String COUNT_RESERVATIONS_QUERY = "SELECT COUNT(*) FROM Reservation;";
 		
 	public long create(Reservation reservation) throws DaoException {
 		try{
@@ -177,6 +175,27 @@ public class ReservationDao {
 			return listeReservations;
 		}catch (SQLException e){
 			throw new DaoException();
+		}
+	}
+
+	public int countResa() throws DaoException{
+		try{
+			Connection connexion = ConnectionManager.getConnection();
+			PreparedStatement ps = connexion.prepareStatement(COUNT_RESERVATIONS_QUERY, Statement.RETURN_GENERATED_KEYS);
+
+			ps.execute();
+
+			ResultSet results = ps.getResultSet();
+			results.next();
+			int resaNbr = results.getInt(1);
+
+			results.close();
+			ps.close();
+			connexion.close();
+
+			return resaNbr;
+		}catch (SQLException e){
+			throw new DaoException(e.getMessage());
 		}
 	}
 }
