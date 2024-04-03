@@ -55,9 +55,9 @@
                                         <c:forEach items="${resaList}" var="resa">
                                         <tr>
                                             <td>${resa.id}</td>
-                                            <td>${vehicleService.findById(resa.vehicle_id).getConstructeur()} Megane</td>
-                                            <td>10/01/2018</td>
-                                            <td>12/01/2018</td>
+                                            <td>${listVehicleName[resa.id-1]}</td>
+                                            <td>${resa.debut}</td>
+                                            <td>${resa.fin}</td>
                                         </tr>
                                         </c:forEach>
                                     </table>

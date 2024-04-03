@@ -80,17 +80,18 @@ public class VehicleDao {
 
 			ps.execute();
 
-			ResultSet results = ps.getGeneratedKeys();
-
-			results.close();
-			ps.close();
-			connexion.close();
+			ResultSet results = ps.getResultSet();
+			results.next();
 
 			Vehicule vehicleResult = new Vehicule();
 			vehicleResult.setId(results.getInt(1));
 			vehicleResult.setConstructeur(results.getString(2));
 			vehicleResult.setNb_places(results.getInt(3));
 			vehicleResult.setModel(results.getString(4));
+
+			results.close();
+			ps.close();
+			connexion.close();
 
 			return vehicleResult;
 		}catch (SQLException e){
