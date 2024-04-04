@@ -24,6 +24,14 @@ public class ReservationService {
         }
     }
 
+    public Reservation findResaById(long id) throws ServiceException{
+        try{
+            return reservationDao.findResaById(id);
+        }catch (DaoException e){
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
     public List<Reservation> findByClientId(long id) throws ServiceException{
         try{
             return reservationDao.findResaByClientId(id);

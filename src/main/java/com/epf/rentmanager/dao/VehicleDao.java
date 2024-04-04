@@ -60,12 +60,9 @@ public class VehicleDao {
 
 			ps.execute();
 
-			ResultSet results = ps.getGeneratedKeys();
-
-			results.close();
 			ps.close();
 			connexion.close();
-			return ps.getGeneratedKeys().getInt(1);
+			return vehicle.getId();
 		}catch (SQLException e){
 			throw new DaoException();
 		}

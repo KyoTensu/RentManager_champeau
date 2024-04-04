@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @WebServlet("/rents")
@@ -37,20 +38,19 @@ public class ResaListServlet extends HttpServlet {
 
         try{
             List<Reservation> resas = reservationService.findAll();
-            /*List<Integer> list = new ArrayList<>();
-            list.add(1);
-            list.add(2);*/
-            List<String> vehicleNames = new ArrayList<>();
-            List<String> clientNames = new ArrayList<>();
 
-            for(int i=0; i < resas.size(); i++){
-                vehicleNames.add(vehicleService.findById(resas.get(i).getVehicle_id()).getConstructeur() + " " + vehicleService.findById(resas.get(i).getVehicle_id()).getModel());
-                clientNames.add(clientService.findById(resas.get(i).getClient_id()).getPrenom() + " " + clientService.findById(resas.get(i).getClient_id()).getNom());
+            if(!resas.isEmpty()){
+                List<String> vehicleNames = new ArrayList<>(Arrays.asList(new String[resas.getLast().getId()]));
+                List<String> clientNames = new ArrayList<>(Arrays.asList(new String[resas.getLast().getId()]));
+                for(Reservation resa : resas){
+                    vehicleNames.add(resa.getId(),vehicleService.findById(resa.getVehicle_id()).getConstructeur() + " " + vehicleService.findById(resa.getVehicle_id()).getModel());
+                    clientNames.add(resa.getId(), clientService.findById(resa.getClient_id()).getPrenom() + " " + clientService.findById(resa.getClient_id()).getNom());
+                }
+                req.setAttribute("listVehicleName", vehicleNames);
+                req.setAttribute("listClientName", clientNames);
             }
 
             req.setAttribute("resas", resas);
-            req.setAttribute("listVehicleName", vehicleNames);
-            req.setAttribute("listClientName", clientNames);
             this.getServletContext().getRequestDispatcher("/WEB-INF/views/rents/list.jsp").forward(req, resp);
         }catch (ServiceException e){
             System.out.println(e.getMessage());

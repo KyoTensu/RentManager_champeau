@@ -37,18 +37,18 @@
                                 <c:forEach items="${resas}" var="resa">
                                 <tr>
                                     <td>${resa.id}</td>
-                                    <td>${listVehicleName[resa.id-1]}</td>
-                                    <td>${listClientName[resa.id-1]}</td>
+                                    <td>${listVehicleName[resa.id]}</td>
+                                    <td>${listClientName[resa.id]}</td>
                                     <td>${resa.debut}</td>
                                     <td>${resa.fin}</td>
                                     <td>
-                                        <a class="btn btn-primary disabled" href="${pageContext.request.contextPath}/cars?id=${resa.id}">
+                                        <a class="btn btn-primary disabled" href="${pageContext.request.contextPath}/rents?id=${resa.id}">
                                             <i class="fa fa-play"></i>
                                         </a>
                                         <a class="btn btn-success disabled" href="#">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <a class="btn btn-danger disabled" href="#">
+                                        <a class="btn btn-danger" href="${pageContext.request.contextPath}/rents/delete?id=${resa.id}">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </td>

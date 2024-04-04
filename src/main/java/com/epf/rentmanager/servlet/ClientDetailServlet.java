@@ -10,6 +10,7 @@ import com.epf.rentmanager.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import javax.lang.model.type.NullType;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @WebServlet("/users/details")
 public class ClientDetailServlet extends HttpServlet {
@@ -46,17 +49,21 @@ public class ClientDetailServlet extends HttpServlet {
             Client client = clientService.findById(Long.parseLong(req.getParameter("id")));
             List<Reservation> resaList = reservationService.findByClientId(Long.parseLong(req.getParameter("id")));
 
-            List<String> vehicleNames = new ArrayList<>();
-
-            for(int i=0; i < resaList.size(); i++){
-                vehicleNames.add(vehicleService.findById(resaList.get(i).getVehicle_id()).getConstructeur() + " " + vehicleService.findById(resaList.get(i).getVehicle_id()).getModel());
+            if(!resaList.isEmpty()){
+                List<String> vehicleNames = new ArrayList<>(Arrays.asList(new String[resaList.getLast().getId()]));
+                List<Vehicule> vehicleList = new ArrayList<>(Arrays.asList(new Vehicule[resaList.getLast().getId()]));
+                for(Reservation resa : resaList){
+                    vehicleNames.add(resa.getId(), vehicleService.findById(resa.getVehicle_id()).getConstructeur() + " " + vehicleService.findById(resa.getVehicle_id()).getModel());
+                    vehicleList.add(resa.getId(), vehicleService.findById(reservationService.findResaById(resa.getId()).getVehicle_id()));
+                }
+                vehicleList.removeIf(vehicule -> Objects.equals(vehicule, null));
+                req.setAttribute("listVehicleName", vehicleNames);
+                req.setAttribute("listVehicle", vehicleList);
             }
-            System.out.println(vehicleNames);
 
             req.setAttribute("resaList", resaList);
             req.setAttribute("client", client);
             req.setAttribute("resaNbr", resaList.size());
-            req.setAttribute("listVehicleName", vehicleNames);
             this.getServletContext().getRequestDispatcher("/WEB-INF/views/users/details.jsp").forward(req, resp);
         }catch (ServiceException e){
             System.out.println(e.getMessage());

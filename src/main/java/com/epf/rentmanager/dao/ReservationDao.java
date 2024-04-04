@@ -25,6 +25,7 @@ public class ReservationDao {
 	
 	private static final String CREATE_RESERVATION_QUERY = "INSERT INTO Reservation(client_id, vehicle_id, debut, fin) VALUES(?, ?, ?, ?);";
 	private static final String DELETE_RESERVATION_QUERY = "DELETE FROM Reservation WHERE id=?;";
+	private static final String FIND_RESERVATION_BY_ID_QUERY = "SELECT id, client_id, vehicle_id, debut, fin FROM Reservation WHERE id=?;";
 	private static final String FIND_RESERVATIONS_BY_CLIENT_QUERY = "SELECT id, vehicle_id, debut, fin FROM Reservation WHERE client_id=?;";
 	private static final String FIND_RESERVATIONS_BY_VEHICLE_QUERY = "SELECT id, client_id, debut, fin FROM Reservation WHERE vehicle_id=?;";
 	private static final String FIND_RESERVATIONS_QUERY = "SELECT id, client_id, vehicle_id, debut, fin FROM Reservation;";
@@ -54,24 +55,47 @@ public class ReservationDao {
 			throw new DaoException();
 		}
 	}
+
+	public Reservation findResaById(long id) throws DaoException{
+		try{
+			Connection connexion = ConnectionManager.getConnection();
+			PreparedStatement ps = connexion.prepareStatement(FIND_RESERVATION_BY_ID_QUERY, Statement.RETURN_GENERATED_KEYS);
+
+			ps.setInt(1, Long.valueOf(id).intValue());
+
+			ps.execute();
+
+			ResultSet results = ps.getResultSet();
+			results.next();
+			Reservation resaToSend = new Reservation();
+			resaToSend.setId(results.getInt(1));
+			resaToSend.setClient_id(results.getInt(2));
+			resaToSend.setVehicle_id(results.getInt(3));
+			resaToSend.setDebut(results.getDate(4).toLocalDate());
+			resaToSend.setFin(results.getDate(5).toLocalDate());
+
+			results.close();
+			ps.close();
+			connexion.close();
+
+			return resaToSend;
+		}catch (SQLException e){
+			throw new DaoException(e.getMessage());
+		}
+	}
 	
 	public long delete(Reservation reservation) throws DaoException {
 		try{
 			Connection connexion = ConnectionManager.getConnection();
-			PreparedStatement ps = connexion.prepareStatement(DELETE_RESERVATION_QUERY, Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement ps = connexion.prepareStatement(DELETE_RESERVATION_QUERY);
 
 			ps.setInt(1, reservation.getId());
 
 			ps.execute();
 
-			ResultSet results = ps.getGeneratedKeys();
-			results.next();
-			long deletedId = results.getInt(1);
-
-			results.close();
 			ps.close();
 			connexion.close();
-			return deletedId;
+			return reservation.getId();
 		}catch (SQLException e){
 			throw new DaoException();
 		}

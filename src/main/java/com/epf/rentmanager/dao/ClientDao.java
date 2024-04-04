@@ -52,18 +52,15 @@ public class ClientDao {
 	public long delete(Client client) throws DaoException {
 		try{
 			Connection connexion = ConnectionManager.getConnection();
-			PreparedStatement ps = connexion.prepareStatement(DELETE_CLIENT_QUERY, Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement ps = connexion.prepareStatement(DELETE_CLIENT_QUERY);
 
 			ps.setInt(1, client.getId());
 
 			ps.execute();
 
-			ResultSet results = ps.getGeneratedKeys();
-
-			results.close();
 			ps.close();
 			connexion.close();
-			return ps.getGeneratedKeys().getInt(1);
+			return client.getId();
 		}catch (SQLException e){
 			throw new DaoException();
 		}

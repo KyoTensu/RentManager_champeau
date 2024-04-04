@@ -55,7 +55,7 @@
                                         <c:forEach items="${resaList}" var="resa">
                                         <tr>
                                             <td>${resa.id}</td>
-                                            <td>${listVehicleName[resa.id-1]}</td>
+                                            <td>${listVehicleName[resa.id]}</td>
                                             <td>${resa.debut}</td>
                                             <td>${resa.fin}</td>
                                         </tr>
@@ -74,24 +74,14 @@
                                             <th>Constructeur</th>
                                             <th style=>Nombre de places</th>
                                         </tr>
+                                        <c:forEach items="${listVehicle}" var="vehicle">
                                         <tr>
-                                            <td>1.</td>
-                                            <td>Renault</td>
-                                            <td>Clio</td>
-                                            <td>5</td>
+                                            <td>${vehicle.id}</td>
+                                            <td>${vehicle.constructeur}</td>
+                                            <td>${vehicle.model}</td>
+                                            <td>${vehicle.nb_places}</td>
                                         </tr>
-                                        <tr>
-                                            <td>2.</td>
-                                            <td>Peugeot</td>
-                                            <td>206</td>
-                                            <td>5</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3.</td>
-                                            <td>Volkswagen</td>
-                                            <td>Touran</td>
-                                            <td>7</td>
-                                        </tr>
+                                        </c:forEach>
                                     </table>
                                 </div>
                             </div>
