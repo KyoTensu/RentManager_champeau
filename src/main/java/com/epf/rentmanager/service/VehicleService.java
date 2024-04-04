@@ -47,6 +47,14 @@ public class VehicleService {
 		}
 	}
 
+	public void update(Vehicule vehicleOld, Vehicule vehicleNew) throws ServiceException{
+		try{
+			vehicleDao.update(vehicleOld, vehicleNew);
+		}catch (DaoException e){
+			throw new ServiceException(e.getMessage());
+		}
+	}
+
 	public Vehicule findById(long id) throws ServiceException {
 		try{
 			return vehicleDao.findById(id);

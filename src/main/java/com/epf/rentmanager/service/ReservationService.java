@@ -3,6 +3,7 @@ package com.epf.rentmanager.service;
 import com.epf.rentmanager.dao.DaoException;
 import com.epf.rentmanager.dao.ReservationDao;
 import com.epf.rentmanager.model.Reservation;
+import com.epf.rentmanager.model.Vehicule;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,14 @@ public class ReservationService {
             return reservationDao.create(reservation);
         }catch (DaoException e){
             throw new ServiceException();
+        }
+    }
+
+    public void update(Reservation resaOld, Reservation resaNew) throws ServiceException{
+        try{
+            reservationDao.update(resaOld, resaNew);
+        }catch (DaoException e){
+            throw new ServiceException(e.getMessage());
         }
     }
 
