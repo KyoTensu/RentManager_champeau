@@ -17,10 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @WebServlet("/users/details")
 public class ClientDetailServlet extends HttpServlet {
@@ -50,8 +47,8 @@ public class ClientDetailServlet extends HttpServlet {
             List<Reservation> resaList = reservationService.findByClientId(Long.parseLong(req.getParameter("id")));
 
             if(!resaList.isEmpty()){
-                List<String> vehicleNames = new ArrayList<>(Arrays.asList(new String[resaList.getLast().getId()]));
-                List<Vehicule> vehicleList = new ArrayList<>(Arrays.asList(new Vehicule[resaList.getLast().getId()]));
+                List<String> vehicleNames = new ArrayList<>(Arrays.asList(new String[resaList.get(resaList.size()-1).getId()]));
+                List<Vehicule> vehicleList = new ArrayList<>(Arrays.asList(new Vehicule[resaList.get(resaList.size()-1).getId()]));
                 for(Reservation resa : resaList){
                     vehicleNames.add(resa.getId(), vehicleService.findById(resa.getVehicle_id()).getConstructeur() + " " + vehicleService.findById(resa.getVehicle_id()).getModel());
                     vehicleList.add(resa.getId(), vehicleService.findById(reservationService.findResaById(resa.getId()).getVehicle_id()));

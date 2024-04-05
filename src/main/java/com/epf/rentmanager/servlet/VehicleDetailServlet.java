@@ -47,8 +47,8 @@ public class VehicleDetailServlet extends HttpServlet {
             List<Reservation> resaList = reservationService.findByVehicleId(Long.parseLong(req.getParameter("id")));
 
             if(!resaList.isEmpty()){
-                List<String> clientNames = new ArrayList<>(Arrays.asList(new String[resaList.getLast().getId()]));
-                List<Client> clientList = new ArrayList<>(Arrays.asList(new Client[resaList.getLast().getId()]));
+                List<String> clientNames = new ArrayList<>(Arrays.asList(new String[resaList.get(resaList.size()-1).getId()]));
+                List<Client> clientList = new ArrayList<>(Arrays.asList(new Client[resaList.get(resaList.size()-1).getId()]));
                 for(Reservation resa : resaList){
                     clientNames.add(resa.getId(), clientService.findById(resa.getClient_id()).getPrenom() + " " + clientService.findById(resa.getClient_id()).getNom());
                     clientList.add(resa.getId(), clientService.findById(reservationService.findResaById(resa.getId()).getVehicle_id()));

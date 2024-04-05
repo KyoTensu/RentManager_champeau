@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 @WebServlet("/rents")
@@ -40,8 +41,8 @@ public class ResaListServlet extends HttpServlet {
             List<Reservation> resas = reservationService.findAll();
 
             if(!resas.isEmpty()){
-                List<String> vehicleNames = new ArrayList<>(Arrays.asList(new String[resas.getLast().getId()]));
-                List<String> clientNames = new ArrayList<>(Arrays.asList(new String[resas.getLast().getId()]));
+                LinkedList<String> vehicleNames = new LinkedList<>(Arrays.asList(new String[resas.get(resas.size()-1).getId()]));
+                LinkedList<String> clientNames = new LinkedList<>(Arrays.asList(new String[resas.get(resas.size()-1).getId()]));
                 for(Reservation resa : resas){
                     vehicleNames.add(resa.getId(),vehicleService.findById(resa.getVehicle_id()).getConstructeur() + " " + vehicleService.findById(resa.getVehicle_id()).getModel());
                     clientNames.add(resa.getId(), clientService.findById(resa.getClient_id()).getPrenom() + " " + clientService.findById(resa.getClient_id()).getNom());
