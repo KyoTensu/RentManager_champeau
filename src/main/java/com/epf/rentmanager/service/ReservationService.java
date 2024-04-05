@@ -7,6 +7,7 @@ import com.epf.rentmanager.model.Vehicule;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +92,45 @@ public class ReservationService {
                     return false;
                 }
             }
+
+            List<Reservation> resaVerifList = reservationDao.findResaByClientId(resa.getClient_id());
+            resaVerifList.removeIf(reservation -> reservation.getVehicle_id() != resa.getVehicle_id());
+            resaVerifList.add(resa);
+            List<Integer> resaVerifDurations = new ArrayList<>();
+            for(int i=0; i <= resaVerifList.size()-2; i ++){
+                resaVerifDurations.add(Long.valueOf(ChronoUnit.DAYS.between(resaVerifList.get(i).getDebut(), resaVerifList.get(i).getFin())).intValue()+1);
+                resaVerifDurations.add(Long.valueOf(ChronoUnit.DAYS.between(resaVerifList.get(i).getFin(), resaVerifList.get(i+1).getDebut())).intValue());
+            }
+            resaVerifDurations.add(Long.valueOf(ChronoUnit.DAYS.between(resaVerifList.get(resaVerifList.size()-1).getDebut(), resaVerifList.get(resaVerifList.size()-1).getFin())).intValue()+1);
+            System.out.println(resaVerifDurations);
+            int sum = 0;
+            List<Integer> listOfSum = new ArrayList<>();
+            for(int i=0; i <= resaVerifDurations.size()-1; i++){
+                if(i%2==0){
+                    sum += resaVerifDurations.get(i);
+                }else if(resaVerifDurations.get(i) == 1 || resaVerifDurations.get(i) == 0){
+
+                }else{
+                    listOfSum.add(sum);
+                    sum = 0;
+                }
+            }
+            listOfSum.add(sum);
+            System.out.println(listOfSum);
+            listOfSum.removeIf(integer -> integer <= 7);
+            if(!listOfSum.isEmpty()){
+                return false;
+            }
+
+//            for(Reservation resaIt : resaVerifList){
+//                resaVerifDurations.add(Long.valueOf(ChronoUnit.DAYS.between(resaIt.getDebut(), resaIt.getFin())).intValue());
+//            }
+//            for(int i=1; i <= resaVerifList.size(); i++){
+//                if(ChronoUnit.DAYS.between(resaVerifList.get(i-1).getFin(), resaVerifList.get(i).getDebut()) == 0){
+//
+//                }
+//            }
+            return true;
         }catch (DaoException e){
             throw new ServiceException(e.getMessage());
         }

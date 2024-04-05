@@ -64,8 +64,13 @@ public class ResaCreateServlet extends HttpServlet {
             resaToCreate.setDebut(LocalDate.parse(req.getParameter("begin"), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             resaToCreate.setFin(LocalDate.parse(req.getParameter("end"), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 
-            reservationService.create(resaToCreate);
-            resp.sendRedirect(req.getContextPath() + "/rents");
+            if(reservationService.verifResa(resaToCreate)){
+                reservationService.create(resaToCreate);
+                resp.sendRedirect(req.getContextPath() + "/rents");
+            }else{
+                resp.sendRedirect(req.getContextPath() + "/rents/create");
+            }
+
         }catch (ServiceException e){
             System.out.println(e.getMessage());
         }
