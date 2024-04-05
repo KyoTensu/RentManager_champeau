@@ -45,8 +45,12 @@ public class ClientCreateServlet extends HttpServlet {
                 clientToCreate.setEmail(req.getParameter("email"));
                 clientToCreate.setNaissance(LocalDate.parse(req.getParameter("dob"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-                clientService.create(clientToCreate);
-                resp.sendRedirect(req.getContextPath() + "/users");
+                if(clientService.clientVerif(clientToCreate)){
+                    clientService.create(clientToCreate);
+                    resp.sendRedirect(req.getContextPath() + "/users");
+                }else{
+                    resp.sendRedirect(req.getContextPath() + "/users/create");
+                }
             }catch (ServiceException e){
                 System.out.println(e.getMessage());
             }

@@ -60,6 +60,11 @@
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-info pull-right">Ajouter</button>
                             </div>
+                            <c:if test="${errorState==true}">
+                                <div>
+                                    <p style="color: red">Un utilisateur doit avoir: un nom et un prenom d'au moins 3 charactères, une adresse mail pas encore utilisée et une age d'au moins 18 ans</p>
+                                </div>
+                            </c:if>
                             <!-- /.box-footer -->
                         </form>
                     </div>
