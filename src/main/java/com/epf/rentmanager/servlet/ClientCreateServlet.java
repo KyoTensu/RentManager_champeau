@@ -40,8 +40,8 @@ public class ClientCreateServlet extends HttpServlet {
 
             try{
                 Client clientToCreate = new Client();
-                clientToCreate.setPrenom(req.getParameter("last_name"));
-                clientToCreate.setNom(req.getParameter("first_name"));
+                clientToCreate.setPrenom(req.getParameter("first_name"));
+                clientToCreate.setNom(req.getParameter("last_name"));
                 clientToCreate.setEmail(req.getParameter("email"));
                 clientToCreate.setNaissance(LocalDate.parse(req.getParameter("dob"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 

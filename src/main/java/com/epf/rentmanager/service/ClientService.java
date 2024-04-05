@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.epf.rentmanager.dao.ClientDao;
 import com.epf.rentmanager.dao.DaoException;
@@ -85,7 +86,37 @@ public class ClientService {
 			boolean isSame = false;
 			if(ChronoUnit.YEARS.between(client.getNaissance(), LocalDate.now()) >= 18){
 				for(Client clientIt : clientDao.findAll()){
-					if(clientIt.getEmail() == client.getEmail()){
+					if(Objects.equals(clientIt.getEmail(), client.getEmail())){
+						isSame = true;
+						break;
+					}
+				}
+				if(isSame){
+					return false;
+				}
+				else{
+					if(client.getPrenom().length() >= 3 && client.getNom().length() >= 3){
+						return true;
+					}else{
+						return false;
+					}
+				}
+			}else{
+				return false;
+			}
+		}catch (DaoException e){
+			throw new ServiceException(e.getMessage());
+		}
+	}
+
+	public boolean clientVerifUpdate(Client client, Client clientOld) throws ServiceException{
+		try{
+			boolean isSame = false;
+			if(ChronoUnit.YEARS.between(client.getNaissance(), LocalDate.now()) >= 18){
+				List<Client> findAllWithoutActual = clientDao.findAll();
+				findAllWithoutActual.removeIf(client1 -> client1.getId() == clientOld.getId());
+				for(Client clientIt : findAllWithoutActual){
+					if(Objects.equals(clientIt.getEmail(), client.getEmail())){
 						isSame = true;
 						break;
 					}

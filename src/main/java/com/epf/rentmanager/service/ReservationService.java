@@ -85,7 +85,7 @@ public class ReservationService {
 
     public boolean verifResa(Reservation resa) throws ServiceException{
         try{
-            for(Reservation resaIt : reservationDao.findAll()){
+            for(Reservation resaIt : reservationDao.findResaByVehicleId(resa.getVehicle_id())){
                 if((resa.getDebut().isBefore(resaIt.getDebut()) && resa.getFin().isBefore(resaIt.getDebut())) || (resa.getDebut().isAfter(resaIt.getFin()) && resa.getFin().isAfter(resaIt.getFin()))){
                     
                 }else{
@@ -102,7 +102,7 @@ public class ReservationService {
                 resaVerifDurations.add(Long.valueOf(ChronoUnit.DAYS.between(resaVerifList.get(i).getFin(), resaVerifList.get(i+1).getDebut())).intValue());
             }
             resaVerifDurations.add(Long.valueOf(ChronoUnit.DAYS.between(resaVerifList.get(resaVerifList.size()-1).getDebut(), resaVerifList.get(resaVerifList.size()-1).getFin())).intValue()+1);
-            System.out.println(resaVerifDurations);
+            //System.out.println(resaVerifDurations);
             int sum = 0;
             List<Integer> listOfSum = new ArrayList<>();
             for(int i=0; i <= resaVerifDurations.size()-1; i++){
@@ -116,20 +116,40 @@ public class ReservationService {
                 }
             }
             listOfSum.add(sum);
-            System.out.println(listOfSum);
+            //System.out.println(listOfSum);
             listOfSum.removeIf(integer -> integer <= 7);
             if(!listOfSum.isEmpty()){
+                //System.out.println("yesman");
                 return false;
             }
 
-//            for(Reservation resaIt : resaVerifList){
-//                resaVerifDurations.add(Long.valueOf(ChronoUnit.DAYS.between(resaIt.getDebut(), resaIt.getFin())).intValue());
-//            }
-//            for(int i=1; i <= resaVerifList.size(); i++){
-//                if(ChronoUnit.DAYS.between(resaVerifList.get(i-1).getFin(), resaVerifList.get(i).getDebut()) == 0){
-//
-//                }
-//            }
+            List<Reservation> resaVehicleVerifList = reservationDao.findResaByVehicleId(resa.getVehicle_id());
+            resaVehicleVerifList.add(resa);
+            List<Integer> resaVehicleVerifDurations = new ArrayList<>();
+            for(int i=0; i <= resaVehicleVerifList.size()-2; i++){
+                resaVehicleVerifDurations.add(Long.valueOf(ChronoUnit.DAYS.between(resaVehicleVerifList.get(i).getDebut(), resaVehicleVerifList.get(i).getFin())).intValue()+1);
+                resaVehicleVerifDurations.add(Long.valueOf(ChronoUnit.DAYS.between(resaVehicleVerifList.get(i).getFin(), resaVehicleVerifList.get(i+1).getDebut())).intValue());
+            }
+            resaVehicleVerifDurations.add(Long.valueOf(ChronoUnit.DAYS.between(resaVehicleVerifList.get(resaVehicleVerifList.size()-1).getDebut(), resaVehicleVerifList.get(resaVehicleVerifList.size()-1).getFin())).intValue()+1);
+            int sumVehicle = 0;
+            List<Integer> listOfVehicleSum = new ArrayList<>();
+            for(int i=0; i <= resaVehicleVerifDurations.size()-1; i++){
+                if(i%2==0){
+                    sumVehicle += resaVehicleVerifDurations.get(i);
+                }else if(resaVehicleVerifDurations.get(i) == 1 || resaVehicleVerifDurations.get(i) == 0){
+
+                }else{
+                    listOfVehicleSum.add(sumVehicle);
+                    sumVehicle = 0;
+                }
+            }
+            listOfVehicleSum.add(sumVehicle);
+            System.out.println(listOfVehicleSum);
+            listOfVehicleSum.removeIf(integer -> integer <= 30);
+            if(!listOfVehicleSum.isEmpty()){
+                return false;
+            }
+
             return true;
         }catch (DaoException e){
             throw new ServiceException(e.getMessage());

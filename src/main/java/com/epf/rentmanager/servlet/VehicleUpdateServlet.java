@@ -43,8 +43,13 @@ public class VehicleUpdateServlet extends HttpServlet {
             vehicleToUpdate.setNb_places(Integer.parseInt(req.getParameter("seats")));
             vehicleToUpdate.setModel(req.getParameter("modele"));
 
-            vehicleService.update(vehicleService.findById(Long.parseLong(req.getParameter("id"))), vehicleToUpdate);
-            resp.sendRedirect(req.getContextPath() + "/cars");
+            if(vehicleService.verifVehicle(vehicleToUpdate)){
+                vehicleService.update(vehicleService.findById(Long.parseLong(req.getParameter("id"))), vehicleToUpdate);
+                resp.sendRedirect(req.getContextPath() + "/cars");
+            }else{
+                resp.sendRedirect(req.getContextPath() + "/cars/update?id=" + req.getParameter("id"));
+            }
+
         }catch (ServiceException e){
             System.out.println(e.getMessage());
         }
