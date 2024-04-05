@@ -78,5 +78,18 @@ public class VehicleService {
 			throw new ServiceException(e.getMessage());
 		}
 	}
+
+	public boolean verifVehicle(Vehicule vehicle) throws ServiceException{
+
+			if(vehicle.getConstructeur().isEmpty() || vehicle.getModel().isEmpty()){
+				return false;
+			}else{
+				if(vehicle.getNb_places() >= 2 && vehicle.getNb_places() <= 9){
+					return true;
+				}else{
+					return false;
+				}
+			}
+	}
 	
 }

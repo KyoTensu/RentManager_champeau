@@ -7,6 +7,7 @@ import com.epf.rentmanager.model.Vehicule;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +77,20 @@ public class ReservationService {
     public int countResa() throws ServiceException{
         try{
             return reservationDao.countResa();
+        }catch (DaoException e){
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    public boolean verifResa(Reservation resa) throws ServiceException{
+        try{
+            for(Reservation resaIt : reservationDao.findAll()){
+                if((resa.getDebut().isBefore(resaIt.getDebut()) && resa.getFin().isBefore(resaIt.getDebut())) || (resa.getDebut().isAfter(resaIt.getFin()) && resa.getFin().isAfter(resaIt.getFin()))){
+                    
+                }else{
+                    return false;
+                }
+            }
         }catch (DaoException e){
             throw new ServiceException(e.getMessage());
         }
