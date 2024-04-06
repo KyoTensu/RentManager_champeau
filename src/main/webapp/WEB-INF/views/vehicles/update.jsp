@@ -70,6 +70,13 @@
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
+                                <c:choose>
+                                    <c:when test="${errorState}">
+                                        <label style="color: red">Le constructeur et le modele du vehicule ne doivent pas etre vides et le nombre de place doit etre compris entre 2 et 9 places (incluses)</label>
+                                    </c:when>
+                                    <c:otherwise>
+                                    </c:otherwise>
+                                </c:choose>
                                 <button type="submit" class="btn btn-info pull-right">Mettre a jour</button>
                             </div>
                             <!-- /.box-footer -->

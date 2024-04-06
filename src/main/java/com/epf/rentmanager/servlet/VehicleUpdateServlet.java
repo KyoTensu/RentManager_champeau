@@ -28,6 +28,9 @@ public class VehicleUpdateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
+            if(!(req.getParameter("errorState") == null)){
+                req.setAttribute("errorState", req.getParameter("errorState"));
+            }
             req.setAttribute("vehicle", vehicleService.findById(Long.parseLong(req.getParameter("id"))));
             this.getServletContext().getRequestDispatcher("/WEB-INF/views/vehicles/update.jsp").forward(req, resp);
         }catch (ServiceException e){
@@ -47,7 +50,7 @@ public class VehicleUpdateServlet extends HttpServlet {
                 vehicleService.update(vehicleService.findById(Long.parseLong(req.getParameter("id"))), vehicleToUpdate);
                 resp.sendRedirect(req.getContextPath() + "/cars");
             }else{
-                resp.sendRedirect(req.getContextPath() + "/cars/update?id=" + req.getParameter("id"));
+                resp.sendRedirect(req.getContextPath() + "/cars/update?id=" + req.getParameter("id") + "&errorState=true");
             }
 
         }catch (ServiceException e){

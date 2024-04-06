@@ -82,6 +82,13 @@
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
+                                <c:choose>
+                                    <c:when test="${errorState}">
+                                        <label style="color: red">Le vehicule est deja reserve sur cette periode, une meme personne ne peut pas reserver le meme vehicule 7 jours de suite, un meme vehicule ne peut pas etre reserve plus de 30 jours de suite</label>
+                                    </c:when>
+                                    <c:otherwise>
+                                    </c:otherwise>
+                                </c:choose>
                                 <button type="submit" class="btn btn-info pull-right">Mettre a jour</button>
                             </div>
                             <!-- /.box-footer -->

@@ -58,6 +58,13 @@
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
+                                <c:choose>
+                                    <c:when test="${errorState}">
+                                        <label style="color: red">Le nom et le prenom doivent contenir au moins 3 caracteres et l'utilisateur doit avoir au moins 18 ans</label>
+                                    </c:when>
+                                    <c:otherwise>
+                                    </c:otherwise>
+                                </c:choose>
                                 <button type="submit" class="btn btn-info pull-right">Mettre a jour</button>
                             </div>
                             <!-- /.box-footer -->

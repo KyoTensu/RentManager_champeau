@@ -42,6 +42,9 @@ public class ResaUpdateServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try{
+            if(!(req.getParameter("errorState") == null)){
+                req.setAttribute("errorState", req.getParameter("errorState"));
+            }
             List<Client> clientList = clientService.findAll();
             List<Vehicule> vehiculeList = vehicleService.findAll();
 
@@ -73,7 +76,7 @@ public class ResaUpdateServlet extends HttpServlet {
                 reservationService.update(reservationService.findResaById(Long.parseLong(req.getParameter("id"))), resaToUpdate);
                 resp.sendRedirect(req.getContextPath() + "/rents");
             }else{
-                resp.sendRedirect(req.getContextPath() + "/rents/update?id=" + req.getParameter("id") + "&vehicleid=" + req.getParameter("car") + "&clientid=" + req.getParameter("client"));
+                resp.sendRedirect(req.getContextPath() + "/rents/update?id=" + req.getParameter("id") + "&vehicleid=" + req.getParameter("car") + "&clientid=" + req.getParameter("client") + "&errorState=true");
             }
 
         }catch (ServiceException e){

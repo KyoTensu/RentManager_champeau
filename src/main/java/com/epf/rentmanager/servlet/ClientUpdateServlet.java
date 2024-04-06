@@ -31,6 +31,9 @@ public class ClientUpdateServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try{
+            if(!(req.getParameter("errorState") == null)){
+                req.setAttribute("errorState", req.getParameter("errorState"));
+            }
             req.setAttribute("client", clientService.findById(Long.parseLong(req.getParameter("id"))));
             this.getServletContext().getRequestDispatcher("/WEB-INF/views/users/update.jsp").forward(req, resp);
         }catch (ServiceException e){
@@ -53,7 +56,7 @@ public class ClientUpdateServlet extends HttpServlet {
                 clientService.update(clientService.findById(Long.parseLong(req.getParameter("id"))),clientToUpdate);
                 resp.sendRedirect(req.getContextPath() + "/users");
             }else{
-                resp.sendRedirect(req.getContextPath() + "/users/update?id=" + req.getParameter("id"));
+                resp.sendRedirect(req.getContextPath() + "/users/update?id=" + req.getParameter("id") + "&errorState=true");
             }
 
         }catch (ServiceException e){
