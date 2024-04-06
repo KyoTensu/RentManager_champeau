@@ -49,7 +49,6 @@ public class ClientUpdateServlet extends HttpServlet {
             clientToUpdate.setEmail(req.getParameter("email"));
             clientToUpdate.setNaissance(LocalDate.parse(req.getParameter("dob"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-            System.out.println(clientService.clientVerifUpdate(clientToUpdate, clientService.findById(Long.parseLong(req.getParameter("id")))));
             if(clientService.clientVerifUpdate(clientToUpdate, clientService.findById(Long.parseLong(req.getParameter("id"))))){
                 clientService.update(clientService.findById(Long.parseLong(req.getParameter("id"))),clientToUpdate);
                 resp.sendRedirect(req.getContextPath() + "/users");

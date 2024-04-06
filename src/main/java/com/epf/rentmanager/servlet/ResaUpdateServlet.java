@@ -67,10 +67,15 @@ public class ResaUpdateServlet extends HttpServlet {
             resaToUpdate.setClient_id(Integer.parseInt(req.getParameter("client")));
             resaToUpdate.setVehicle_id(Integer.parseInt(req.getParameter("car")));
             resaToUpdate.setDebut(LocalDate.parse(req.getParameter("begin"), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-            resaToUpdate.setDebut(LocalDate.parse(req.getParameter("end"), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            resaToUpdate.setFin(LocalDate.parse(req.getParameter("end"), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 
-            reservationService.update(reservationService.findResaById(Long.parseLong(req.getParameter("id"))), resaToUpdate);
-            resp.sendRedirect(req.getContextPath() + "/rents");
+            if(reservationService.verifResaUpdate(resaToUpdate, reservationService.findResaById(Long.parseLong(req.getParameter("id"))))){
+                reservationService.update(reservationService.findResaById(Long.parseLong(req.getParameter("id"))), resaToUpdate);
+                resp.sendRedirect(req.getContextPath() + "/rents");
+            }else{
+                resp.sendRedirect(req.getContextPath() + "/rents/update?id=" + req.getParameter("id") + "&vehicleid=" + req.getParameter("car") + "&clientid=" + req.getParameter("client"));
+            }
+
         }catch (ServiceException e){
             System.out.println(e.getMessage());
         }
