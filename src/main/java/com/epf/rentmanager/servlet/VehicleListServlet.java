@@ -34,8 +34,6 @@ public class VehicleListServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try{
-            //ApplicationContext context = new AnnotationConfigApplicationContext(AppConfiguration.class);
-            //VehicleService vehicleService = context.getBean(VehicleService.class);
             List<Vehicule> vehicles = vehicleService.findAll();
 
             request.setAttribute("vehicles", vehicles);

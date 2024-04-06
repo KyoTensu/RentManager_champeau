@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 public class VehicleService {
 
 	private VehicleDao vehicleDao;
-	//public static VehicleService instance;
 
 	@Autowired
 	private VehicleService(VehicleDao vehicleDao) {

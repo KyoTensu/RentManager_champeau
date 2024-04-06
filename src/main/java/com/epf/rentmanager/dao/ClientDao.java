@@ -124,9 +124,6 @@ public class ClientDao {
 			ps.execute();
 
 			ResultSet results = ps.getResultSet();
-			//results.next();
-			//System.out.println(results.getInt(1));
-			//System.out.println("avant while");
 
 			List<Client> listeClients = new ArrayList<>();
 
@@ -139,17 +136,12 @@ public class ClientDao {
 				clientIter.setEmail(results.getString(4));
 				clientIter.setNaissance(results.getDate(5).toLocalDate());
 
-				//System.out.println(clientIter.getEmail());
 				listeClients.add(clientIter);
-
-				//System.out.println(listeClients);
 			}
 
 			results.close();
 			ps.close();
 			connexion.close();
-
-			//System.out.println("après while "+listeClients);
 
 			return listeClients;
 		}catch (SQLException e){

@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 public class ClientService {
 
 	private ClientDao clientDao;
-	//public static ClientService instance;
 
 	private ClientService(ClientDao clientDao) {
 		this.clientDao = clientDao;

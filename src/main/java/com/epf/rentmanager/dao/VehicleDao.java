@@ -126,7 +126,6 @@ public class VehicleDao {
 			ResultSet results = ps.getResultSet();
 
 			List<Vehicule> listeVehicles = new ArrayList<>();
-			//System.out.println("avant while");
 
 			while(results.next()){
 				Vehicule vehicleIter = new Vehicule();

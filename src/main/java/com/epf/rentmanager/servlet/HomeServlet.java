@@ -45,8 +45,6 @@ public class HomeServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		try{
-			//ApplicationContext context = new AnnotationConfigApplicationContext(AppConfiguration.class);
-			//VehicleService vehicleService = context.getBean(VehicleService.class);
 			request.setAttribute("vehiclesNbr", vehicleService.countVehicles());
 			request.setAttribute("clientNbr", clientService.countClient());
 			request.setAttribute("resaNbr", reservationService.countResa());

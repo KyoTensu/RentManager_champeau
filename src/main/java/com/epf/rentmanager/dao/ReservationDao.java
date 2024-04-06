@@ -139,7 +139,6 @@ public class ReservationDao {
 			while(results.next()){
 				Reservation reservationIter = new Reservation();
 				reservationIter.setId(results.getInt(1));
-				//reservationIter.setClient_id(results.getInt(2));
 				reservationIter.setVehicle_id(results.getInt(2));
 				reservationIter.setDebut(results.getDate(3).toLocalDate());
 				reservationIter.setFin(results.getDate(4).toLocalDate());
@@ -174,7 +173,6 @@ public class ReservationDao {
 				Reservation reservationIter = new Reservation();
 				reservationIter.setId(results.getInt(1));
 				reservationIter.setClient_id(results.getInt(2));
-				//reservationIter.setVehicle_id(results.getInt(3));
 				reservationIter.setDebut(results.getDate(3).toLocalDate());
 				reservationIter.setFin(results.getDate(4).toLocalDate());
 
